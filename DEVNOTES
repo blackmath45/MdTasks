@@ -1,2 +1,17 @@
 Procédure création projet
 ---------------------------
+
+cd MdTasks
+
+***************
+wapi
+***************
+mkdir wapi
+cd wapi
+
+npm init
+  package name : mdtaskswapi
+  entry point : app.js
+
+npm install --save express
+npm install --save body-parser
