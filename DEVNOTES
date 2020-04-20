@@ -1,6 +1,20 @@
 Procédure création projet
 ---------------------------
 
+wget -q https://deb.nodesource.com/setup_13.x
+chmod u+x setup_13.x
+./setup_13.x
+sudo apt-get install -y nodejs
+nodejs -v
+
+
+Créer un dépôt github
+Copier l'URL du dépot
+Sur ATOM, faire CTRL+SHIFT+P
+Taper github: clone
+Entrer l'URL du dépot. Valider
+Suivre les instructions pour le link github/atom
+
 cd MdTasks
 
 ***************
@@ -15,3 +29,26 @@ npm init
 
 npm install --save express
 npm install --save body-parser
+
+***************
+front
+***************
+mkdir front
+cd front
+
+(sudo) npm install -g @angular/cli
+ng new - --skip-tests
+  Nom : mdtasks
+  Oui pour angular routing
+  CSS
+
+cd MdTasks
+
+ng add @angular/localize
+npm install @ng-bootstrap/ng-bootstrap
+npm install bootstrap
+
+ng g c TasksList
+ng g c TaskDetail
+
+ng serve --open
