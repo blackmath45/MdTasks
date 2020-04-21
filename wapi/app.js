@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 
 //https://expressjs.com/fr/guide/routing.html
 //http://developerhowto.com/2018/12/29/build-a-rest-api-with-node-js-and-express-js/
-
+//https://www.pierre-giraud.com/javascript-apprendre-coder-cours/async-await/
 
 /******************************************************************************/
 /*                  Routeur + Static Content                                  */
@@ -96,20 +96,12 @@ router.delete('/', (req, res) => {
   return res.send('Received a DELETE HTTP method');
 });
 
-
-
-
-
-
-
-
-
-/*
-app.get("/api/users", (req, res, next) => {
+router.get("/api/users", (req, res, next) => {
     var sql = "select * from user"
     var params = []
-    db.all(sql, params, (err, rows) => {
-        if (err) {
+    db.all(sql, params,  (err, rows) => {
+        if (err)
+        {
           res.status(400).json({"error":err.message});
           return;
         }
@@ -120,6 +112,8 @@ app.get("/api/users", (req, res, next) => {
       });
 });
 
+
+/*
 app.get("/api/user/:id", (req, res, next) => {
     var sql = "select * from user where id = ?"
     var params = [req.params.id]
