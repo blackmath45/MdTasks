@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const sqlite3 = require('sqlite3').verbose()
 const app = express()
+const router = express.Router();
 
 const HTTP_PORT = 3000
 const DB_SOURCE = "db.sqlite"
@@ -14,7 +15,17 @@ app.use(bodyParser.json());
 //https://www.frugalprototype.com/developpez-propre-api-node-js-express/
 //https://github.com/cloudhead/node-static
 
+//https://expressjs.com/fr/guide/routing.html
 //http://developerhowto.com/2018/12/29/build-a-rest-api-with-node-js-and-express-js/
+
+
+/******************************************************************************/
+/*                  Routeur + Static Content                                  */
+/******************************************************************************/
+app.use("/", router);
+app.use(express.static('static'))
+/******************************************************************************/
+
 
 /******************************************************************************/
 /*                                  DB                                        */
@@ -53,63 +64,154 @@ let db = new sqlite3.Database(DB_SOURCE, (err) => {
 });
 /******************************************************************************/
 
-/****************************************************** STATIC AND rest
-
-var express = require('express');
-//init Express
-var app = express();
-//init Express Router
-var router = express.Router();
-var port = process.env.PORT || 8080;
 // GET /status
 router.get('/status', function(req, res) {
     res.json({ status: 'App is running!' });
 });
-//connect path to router
-app.use("/", router);
-app.use(express.static('static'))
-var server = app.listen(port, function () {
-    console.log('node.js static content and REST server listening on port: ' + port)
-})
-*********************************************************************/
 
-
-
-
-/*
-app.use(express.json()); ??????????
-app.use(express.urlencoded({ extended: true })); ????????
-*/
-
-/*
-app.get('/', (req, res) => {
-  return res.send('Received a GET HTTP method');
-});
-app.post('/', (req, res) => {
-  return res.send('Received a POST HTTP method');
-});
-app.put('/', (req, res) => {
-  return res.send('Received a PUT HTTP method');
-});
-app.delete('/', (req, res) => {
-  return res.send('Received a DELETE HTTP method');
-});
-*/
-
-app.get('/', function(req, res) {
+router.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send('Vous êtes à l\'accueil, que puis-je pour vous ?');
 });
 
-app.get('/sous-sol', function(req, res) {
+router.get('/sous-sol', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send('Vous êtes dans la cave à vins, ces bouteilles sont à moi !');
 });
 
-app.get('/etage/:etagenum/chambre', function(req, res) {
+router.get('/etage/:etagenum/chambre', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.end('Vous êtes à la chambre de l\'étage n°' + req.params.etagenum);
 });
+
+router.post('/', (req, res) => {
+  return res.send('Received a POST HTTP method');
+});
+
+router.put('/', (req, res) => {
+  return res.send('Received a PUT HTTP method');
+});
+
+router.delete('/', (req, res) => {
+  return res.send('Received a DELETE HTTP method');
+});
+
+
+
+
+
+
+
+
+
+/*
+app.get("/api/users", (req, res, next) => {
+    var sql = "select * from user"
+    var params = []
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":rows
+        })
+      });
+});
+
+app.get("/api/user/:id", (req, res, next) => {
+    var sql = "select * from user where id = ?"
+    var params = [req.params.id]
+    db.get(sql, params, (err, row) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":row
+        })
+      });
+});
+
+app.post("/api/user/", (req, res, next) => {
+    var errors=[]
+    if (!req.body.password){
+        errors.push("No password specified");
+    }
+    if (!req.body.email){
+        errors.push("No email specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    var data = {
+        name: req.body.name,
+        email: req.body.email,
+        password : md5(req.body.password)
+    }
+    var sql ='INSERT INTO user (name, email, password) VALUES (?,?,?)'
+    var params =[data.name, data.email, data.password]
+    db.run(sql, params, function (err, result) {
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": data,
+            "id" : this.lastID
+        })
+    });
+})
+
+app.patch("/api/user/:id", (req, res, next) => {
+    var data = {
+        name: req.body.name,
+        email: req.body.email,
+        password : req.body.password ? md5(req.body.password) : null
+    }
+    db.run(
+        `UPDATE user set
+           name = COALESCE(?,name),
+           email = COALESCE(?,email),
+           password = COALESCE(?,password)
+           WHERE id = ?`,
+        [data.name, data.email, data.password, req.params.id],
+        function (err, result) {
+            if (err){
+                res.status(400).json({"error": res.message})
+                return;
+            }
+            res.json({
+                message: "success",
+                data: data,
+                changes: this.changes
+            })
+    });
+})
+
+app.delete("/api/user/:id", (req, res, next) => {
+    db.run(
+        'DELETE FROM user WHERE id = ?',
+        req.params.id,
+        function (err, result) {
+            if (err){
+                res.status(400).json({"error": res.message})
+                return;
+            }
+            res.json({"message":"deleted", changes: this.changes})
+    });
+})
+
+*/
+
+
+
+
+
 /*
 app.get('/', async (req, res) => {
     const livres = await Livres.find() // On récupère tout les livres
@@ -167,7 +269,10 @@ app.post('/', async (req, res) => {
 
 });*/
 
-app.use(function(req, res, next){
+/******************************************************************************/
+/*                                   404                                      */
+/******************************************************************************/
+router.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Page introuvable !');
 });
