@@ -1,11 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const sqlite3 = require('sqlite3').verbose()
 const app = express()
 const router = express.Router();
 
+//const db = require('./db.js');
+const dbTasks = require('./dbTasks.js');
+
 const HTTP_PORT = 3000
-const DB_SOURCE = "db.sqlite"
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -27,42 +28,7 @@ app.use(express.static('static'))
 /******************************************************************************/
 
 
-/******************************************************************************/
-/*                                  DB                                        */
-/******************************************************************************/
-let db = new sqlite3.Database(DB_SOURCE, (err) => {
-  if (err)
-  {
-    // Cannot open database
-    console.error(err.message)
-    throw err
-  }
-  else
-  {
-    console.log('Connected to the SQLite database.')
-    db.run(`CREATE TABLE user (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name text,
-      email text UNIQUE,
-      password text,
-      CONSTRAINT email_unique UNIQUE (email)
-    )`,
-    (err) => {
-      if (err)
-      {
-        // Table already created
-      }
-      else
-      {
-        // Table just created, creating some rows
-        var insert = 'INSERT INTO user (name, email, password) VALUES (?,?,?)'
-        db.run(insert, ["admin","admin@example.com","admin123456"])
-        db.run(insert, ["user","user@example.com","user123456"])
-      }
-    });
-  }
-});
-/******************************************************************************/
+
 
 // GET /status
 router.get('/status', function(req, res) {
@@ -94,11 +60,11 @@ router.put('/', (req, res) => {
 
 router.delete('/', (req, res) => {
   return res.send('Received a DELETE HTTP method');
+  //res.sendStatus(200)
 });
 
 router.get("/api/users", (req, res, next) => {
-    var sql = "select * from user"
-    var params = []
+    /*
     db.all(sql, params,  (err, rows) => {
         if (err)
         {
@@ -109,8 +75,16 @@ router.get("/api/users", (req, res, next) => {
             "message":"success",
             "data":rows
         })
-      });
+      });*/
+    const result = dbTasks.find();
+    res.send(result);
 });
+
+/*
+const hash = crypto
+    .createHmac('sha512', salt)
+    .update(password)
+    */
 
 
 /*
@@ -268,7 +242,8 @@ app.post('/', async (req, res) => {
 /******************************************************************************/
 router.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');
-    res.status(404).send('Page introuvable !');
+    //res.status(404).send('Page introuvable !');
+    res.sendStatus(404);
 });
 
 app.listen(HTTP_PORT, () => console.log(`Example app listening at http://localhost:${HTTP_PORT}`))
