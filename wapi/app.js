@@ -13,12 +13,15 @@ app.use(bodyParser.json());
 
 //https://www.robinwieruch.de/postgres-express-setup-tutorial/
 //https://stackabuse.com/building-a-rest-api-with-node-and-express/
+
 //https://www.frugalprototype.com/developpez-propre-api-node-js-express/
 //https://github.com/cloudhead/node-static
 
 //https://expressjs.com/fr/guide/routing.html
 //http://developerhowto.com/2018/12/29/build-a-rest-api-with-node-js-and-express-js/
 //https://www.pierre-giraud.com/javascript-apprendre-coder-cours/async-await/
+
+//https://stackabuse.com/a-sqlite-tutorial-with-node-js/
 
 /******************************************************************************/
 /*                  Routeur + Static Content                                  */
@@ -63,21 +66,20 @@ router.delete('/', (req, res) => {
   //res.sendStatus(200)
 });
 
-router.get("/api/users", (req, res, next) => {
-    /*
-    db.all(sql, params,  (err, rows) => {
-        if (err)
-        {
-          res.status(400).json({"error":err.message});
-          return;
-        }
-        res.json({
-            "message":"success",
-            "data":rows
-        })
-      });*/
-    const result = dbTasks.find();
-    res.send(result);
+router.get("/api/users", async (req, res, next) =>
+{
+      let result;
+      try
+      {
+        result = await dbTasks.find();
+        res.json(result);
+      }
+      catch (err)
+      {
+        console.log('DB error', err);
+        return res.status(500).send();
+      }
+
 });
 
 /*
