@@ -1,9 +1,13 @@
 const express = require('express')
-const body = require('body-parser')
+const bodyParser = require('body-parser')
+const sqlite3 = require('sqlite3').verbose()
 const app = express()
-const port = 3000
 
-app.use(body())
+const HTTP_PORT = 3000
+const DB_SOURCE = "db.sqlite"
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 //https://www.robinwieruch.de/postgres-express-setup-tutorial/
 //https://stackabuse.com/building-a-rest-api-with-node-and-express/
@@ -11,6 +15,43 @@ app.use(body())
 //https://github.com/cloudhead/node-static
 
 //http://developerhowto.com/2018/12/29/build-a-rest-api-with-node-js-and-express-js/
+
+/******************************************************************************/
+/*                                  DB                                        */
+/******************************************************************************/
+let db = new sqlite3.Database(DB_SOURCE, (err) => {
+  if (err)
+  {
+    // Cannot open database
+    console.error(err.message)
+    throw err
+  }
+  else
+  {
+    console.log('Connected to the SQLite database.')
+    db.run(`CREATE TABLE user (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name text,
+      email text UNIQUE,
+      password text,
+      CONSTRAINT email_unique UNIQUE (email)
+    )`,
+    (err) => {
+      if (err)
+      {
+        // Table already created
+      }
+      else
+      {
+        // Table just created, creating some rows
+        var insert = 'INSERT INTO user (name, email, password) VALUES (?,?,?)'
+        db.run(insert, ["admin","admin@example.com","admin123456"])
+        db.run(insert, ["user","user@example.com","user123456"])
+      }
+    });
+  }
+});
+/******************************************************************************/
 
 /****************************************************** STATIC AND rest
 
@@ -105,9 +146,9 @@ app.patch('/:id', async(req, res) => {
 })
 
 app.post('/', async (req, res) => {
-    const titre = req.body.titre; // récupération des variables du body
-    const auteur = req.body.auteur
-    const genre = req.body.genre
+    const titre = req.bodyParser.titre; // récupération des variables du body
+    const auteur = req.bodyParser.auteur
+    const genre = req.bodyParser.genre
 
     if (!genre || !auteur  || !titre) { // on vérifie que les trois variables sont présentes
         res.send('Il manque un argument')
@@ -131,4 +172,4 @@ app.use(function(req, res, next){
     res.status(404).send('Page introuvable !');
 });
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(HTTP_PORT, () => console.log(`Example app listening at http://localhost:${HTTP_PORT}`))

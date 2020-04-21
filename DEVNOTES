@@ -1,6 +1,8 @@
 Procédure création projet
 ---------------------------
 
+sudo apt-get install sqlitebrowser
+
 wget -q https://deb.nodesource.com/setup_13.x
 chmod u+x setup_13.x
 ./setup_13.x
@@ -29,6 +31,9 @@ npm init
 
 npm install --save express
 npm install --save body-parser
+npm install --save sqlite3
+
+RUN : npm run start
 
 ***************
 front
