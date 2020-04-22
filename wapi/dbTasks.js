@@ -7,17 +7,19 @@ module.exports =
 {
   find: function ()
   {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) =>
+    {
       setTimeout(() => {
         reject('Query DB failed');
       }, 500);
 
-      var currentTime = new Date().getTime();
-
 /*
-      while (currentTime + 1000 >= new Date().getTime()) {
+      var currentTime = new Date().getTime();
+      while (currentTime + 5000 >= new Date().getTime())
+      {
       }
 */
+
     var sql = "select * from user"
     var params = []
 
@@ -41,3 +43,6 @@ module.exports =
     // whatever
   }
 };
+
+//CREATE TABLE `tasks` ( `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `ID_Project` INTEGER, `Nom` TEXT, `Compartiment` INTEGER, `Progression` INTEGER, `Priorite` INTEGER, `DateDebut` INTEGER, `DateEcheance` INTEGER, `Notes` TEXT )
+//CREATE TABLE `comments` ( `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `ID_Task` INTEGER NOT NULL, `Date` INTEGER, `Ordre` INTEGER, `Commentaire` TEXT )
