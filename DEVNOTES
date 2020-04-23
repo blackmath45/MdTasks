@@ -55,5 +55,6 @@ npm install bootstrap
 
 ng g c TasksList
 ng g c TaskDetail
+ng g s wapi
 
-ng serve --open
+RUN : npm run start

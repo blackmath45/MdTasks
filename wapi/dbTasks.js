@@ -20,7 +20,9 @@ module.exports =
       }
 */
 
-    var sql = "select * from user"
+    var sql = `SELECT ID, ID_Project, Nom, Compartiment, Progression, Priorite,
+                DateDebut, DateEcheance, Notes FROM tasks`;
+
     var params = []
 
     db.all(sql, params,  (err, rows) => {

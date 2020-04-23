@@ -1,1 +1,12 @@
 <p>tasks-list works!</p>
+
+<button (click)="sendGetRequest()">GET Users</button>
+
+<div *ngFor="let article of products">
+  <h2>{{article.Nom}}</h2>
+
+    <p>
+      {{article.Notes}}
+    </p>
+    <a href="{{article.ID}}">Read full article</a>
+</div>
