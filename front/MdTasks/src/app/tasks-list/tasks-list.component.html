@@ -10,3 +10,51 @@
     </p>
     <a href="{{article.ID}}">Read full article</a>
 </div>
+
+<ul>
+  <li draggable>Coffee</li>
+  <li draggable>Tea</li>
+  <li draggable>Milk</li>
+</ul>
+
+<div droppable>
+  <p>Drop items here</p>
+</div>
+
+
+<div class="row">
+
+    <div class="col-sm-3">
+        <div class="card card-outline-success mb-3" droppable [dragOverClass]="'drag-target-border'"
+            [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
+            <div class="card-header card-inverse card-success">
+                Draggable Items
+                </div>
+            <div class="card-block scroll-list">
+                <div class="list-group">
+                    <li *ngFor="let item of vegetables" class="list-group-item list-group-item-action list-group-item-success"
+                        [draggable] [dragClass]="'active'" [dragData]="item">
+                        {{item.name}}
+                    </li>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-3">
+        <div class="card card-outline-primary mb-3" droppable [dragOverClass]="'drag-target-border'"
+            [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrop($event)">
+            <div class="card-header card-inverse card-primary">
+                Drop Anything here
+              </div>
+            <div class="card-block scroll-list">
+                <li *ngFor="let item of droppedItems" class="list-group-item"
+                    [draggable] [dragData]="item">
+                    {{item.name}}
+                </li>
+            </div>
+        </div>
+    </div>
+
+</div>
