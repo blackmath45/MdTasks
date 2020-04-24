@@ -3,17 +3,17 @@
 <div class="row">
     <div class="col" *ngFor="let acompartiment of compartiments">
       <div class="card text-center">
-        <div class="card-header">
+        <div class="card-header p-1">
           {{acompartiment.Nom}}
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
 
           <ng-container *ngFor="let atask of tasks" >
             <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
 
-              <div class="card mb-3" [attr.data-taskid]="atask.ID">
-                <div class="card-header text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
-                <div class="card-body">
+              <div class="card m-2" [attr.data-taskid]="atask.ID">
+                <div class="card-header p-1 text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
+                <div class="card-body p-1">
 
                   {{atask.DateDebut}}
                   {{atask.DateEcheance}}
