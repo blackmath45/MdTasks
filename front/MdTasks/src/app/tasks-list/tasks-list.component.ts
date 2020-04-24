@@ -24,15 +24,44 @@ export class TasksListComponent implements OnInit
   getTasksRequest()
   {
     this.wapiSvce.getTasks().subscribe((data: any[])=>{
-			console.log(data);
-			this.tasks = data;
-		})
+      //console.log(data);
+
+      // Preparation couleurs bootstrap
+      for (let adata of data)
+      {
+        //bg-primary bg-success bg-info bg-warning bg-danger
+        switch (adata.Priorite)
+        {
+          case 1:
+          adata.PrioriteBSColor ="bg-danger";
+          break;
+          case 2:
+          adata.PrioriteBSColor ="bg-warning";
+          break;
+          case 3:
+          adata.PrioriteBSColor ="bg-info";
+          break;
+          default:
+          adata.PrioriteBSColor ="bg-primary";
+        }
+
+        adata.ProgressionBSColor = "bg-primary";
+        /*
+        if (adata.Progression <= 100) { adata.ProgressionBSColor ="bg-success"; }
+        if (adata.Progression <= 75) { adata.ProgressionBSColor ="bg-info"; }
+        if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
+        if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
+        */
+      }
+
+      this.tasks = data;
+    })
   }
 
   getCompartimentsRequest()
   {
     this.wapiSvce.getCompartiments().subscribe((data: any[])=>{
-      console.log(data);
+      //console.log(data);
       this.compartiments = data;
     })
   }

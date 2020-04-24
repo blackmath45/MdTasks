@@ -12,20 +12,11 @@
             <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
 
               <div class="card mb-3" [attr.data-taskid]="atask.ID">
-                <div class="card-header text-white bg-primary">
-                {{atask.Nom}}
-                </div>
+                <div class="card-header text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
                 <div class="card-body">
 
-
-
-                  <!-- bg-success bg-info bg-warning bg-danger -->
-
-                  {{atask.Priorite}}
                   {{atask.DateDebut}}
                   {{atask.DateEcheance}}
-
-
 
                   <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
                   <p class="card-text">{{atask.Notes}}</p>
@@ -34,7 +25,7 @@
                 </div>
                 <div class="card-footer text-muted">
                   <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="atask.Progression" aria-valuemin="0" aria-valuemax="100" style="width: {{atask.Progression}}%">{{atask.Progression}}%</div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated {{atask.ProgressionBSColor}}" role="progressbar" [attr.aria-valuenow]="atask.Progression" aria-valuemin="0" aria-valuemax="100" style="width: {{atask.Progression}}%">{{atask.Progression}}%</div>
                   </div>
                 </div>
               </div>
