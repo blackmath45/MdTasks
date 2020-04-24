@@ -1,3 +1,7 @@
+<ng-container *ngIf="alert.show == 'true'">
+  <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
+</ng-container>
+
 <div class="row mt-4">
     <div class="col" *ngFor="let acompartiment of compartiments">
       <div class="card text-center" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
@@ -37,8 +41,8 @@
 
 
 <div *ngFor="let a of tasksbycompartiments">
-  <div *ngFor="let r of a">
-    nom : {{r.Nom}}
+<div *ngFor="let r of a">
+  nom : {{r.Nom}}
   </div>
 </div>
 

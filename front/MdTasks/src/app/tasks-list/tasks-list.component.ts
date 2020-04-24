@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WapiService } from '../wapi.service';
 import { Observable, forkJoin } from 'rxjs';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {map, catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'app-tasks-list',
@@ -10,10 +9,13 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./tasks-list.component.css']
 })
 
-//https://coryrylan.com/blog/angular-multiple-http-requests-with-rxjs
+//https://ng-bootstrap.github.io/#/components/alert/examples
 
 export class TasksListComponent implements OnInit
 {
+  //showAlert = false;
+  alert = {show : 'false', type: 'danger', message: 'Error' };
+
   compartiments = [];
   tasks = [];
 
@@ -21,93 +23,74 @@ export class TasksListComponent implements OnInit
 
   constructor(private wapiSvce: WapiService) { }
 
+  closeAlert() { this.alert.show = 'false'; }
+
   ngOnInit(): void
   {
-    this.getCompartimentsRequest();
-    this.getTasksRequest();
 
-/*
-    forkJoin(
-      this.wapiSvce.getCompartiments()
-
-    ).pipe(
-      map(([first]) => {
-        // forkJoin returns an array of values, here we map those values to an object
-        //this.compartiments = (first : any[]);
-        console.log('ok');
-      })
+    const example = forkJoin(
+      this.wapiSvce.getCompartiments().pipe(catchError(error => { this.alert.show = 'true'; this.alert.message = error; })),
+      this.wapiSvce.getTasks().pipe(catchError(error => { this.alert.show = 'true'; this.alert.message = error; }))
     );
-*/
 
+    const subscribe = example.subscribe(([dataCompartiments, dataTasks]) =>
+      {
+        this.compartiments = dataCompartiments;
+
+        // Preparation couleurs bootstrap
+        for (let adata of dataTasks)
+        {
+          //bg-primary bg-success bg-info bg-warning bg-danger
+          switch (adata.Priorite)
+          {
+            case 1:
+            adata.PrioriteBSColor ="bg-danger";
+            break;
+            case 2:
+            adata.PrioriteBSColor ="bg-warning";
+            break;
+            case 3:
+            adata.PrioriteBSColor ="bg-info";
+            break;
+            default:
+            adata.PrioriteBSColor ="bg-primary";
+          }
+
+          adata.ProgressionBSColor = "bg-primary";
+          if (adata.Progression == 100)
+          {
+                    adata.ProgressionBSColor = "bg-success";
+          }
 
           /*
-        for (let acompartiment of this.compartiments)
+          if (adata.Progression <= 100) { adata.ProgressionBSColor ="bg-success"; }
+          if (adata.Progression <= 75) { adata.ProgressionBSColor ="bg-info"; }
+          if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
+          if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
+          */
+        }
+
+        this.tasks = dataTasks;
+
+        for (let acompartiment of dataCompartiments)
         {
-          for (let atask of this.tasks)
+          for (let atask of dataTasks)
           {
             if (atask.ID_Compartiment == acompartiment.ID)
             {
+              if (this.tasksbycompartiments[acompartiment.Ordre] === undefined)
+              {
+                this.tasksbycompartiments[acompartiment.Ordre] = []
+              }
+              // stocker données mais aussi index du compartiment
               this.tasksbycompartiments[acompartiment.Ordre].push(atask);
             }
           }
-        }*/
-
-
-
-  }
-
-
-// AJOUT
-  getTasksRequest()
-  {
-    this.wapiSvce.getTasks().subscribe((data: any[])=>{
-      //console.log(data);
-
-      // Preparation couleurs bootstrap
-      for (let adata of data)
-      {
-        //bg-primary bg-success bg-info bg-warning bg-danger
-        switch (adata.Priorite)
-        {
-          case 1:
-          adata.PrioriteBSColor ="bg-danger";
-          break;
-          case 2:
-          adata.PrioriteBSColor ="bg-warning";
-          break;
-          case 3:
-          adata.PrioriteBSColor ="bg-info";
-          break;
-          default:
-          adata.PrioriteBSColor ="bg-primary";
         }
-
-        adata.ProgressionBSColor = "bg-primary";
-        if (adata.Progression == 100)
-        {
-                  adata.ProgressionBSColor = "bg-success";
-        }
-
-        /*
-        if (adata.Progression <= 100) { adata.ProgressionBSColor ="bg-success"; }
-        if (adata.Progression <= 75) { adata.ProgressionBSColor ="bg-info"; }
-        if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
-        if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
-        */
-      }
-
-      this.tasks = data;
-    })
+      });
   }
 
-  getCompartimentsRequest()
-  {
-    this.wapiSvce.getCompartiments().subscribe((data: any[])=>{
-      //console.log(data);
-      this.compartiments = data;
-    })
-  }
-// FIN AJOUT
+
 
 
 
@@ -148,6 +131,19 @@ export class TasksListComponent implements OnInit
     }).indexOf(item.name);
     list.splice(index, 1);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 //https://www.npmjs.com/package/ng-drag-drop#draggable-directive
