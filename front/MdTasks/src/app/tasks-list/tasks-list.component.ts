@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WapiService } from '../wapi.service';
+import { Observable, forkJoin } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tasks-list',
@@ -7,10 +10,14 @@ import { WapiService } from '../wapi.service';
   styleUrls: ['./tasks-list.component.css']
 })
 
+//https://coryrylan.com/blog/angular-multiple-http-requests-with-rxjs
+
 export class TasksListComponent implements OnInit
 {
-  compartiments = []
+  compartiments = [];
   tasks = [];
+
+  tasksbycompartiments= [[]];
 
   constructor(private wapiSvce: WapiService) { }
 
@@ -18,7 +25,37 @@ export class TasksListComponent implements OnInit
   {
     this.getCompartimentsRequest();
     this.getTasksRequest();
+
+/*
+    forkJoin(
+      this.wapiSvce.getCompartiments()
+
+    ).pipe(
+      map(([first]) => {
+        // forkJoin returns an array of values, here we map those values to an object
+        //this.compartiments = (first : any[]);
+        console.log('ok');
+      })
+    );
+*/
+
+
+          /*
+        for (let acompartiment of this.compartiments)
+        {
+          for (let atask of this.tasks)
+          {
+            if (atask.ID_Compartiment == acompartiment.ID)
+            {
+              this.tasksbycompartiments[acompartiment.Ordre].push(atask);
+            }
+          }
+        }*/
+
+
+
   }
+
 
 // AJOUT
   getTasksRequest()
@@ -46,6 +83,11 @@ export class TasksListComponent implements OnInit
         }
 
         adata.ProgressionBSColor = "bg-primary";
+        if (adata.Progression == 100)
+        {
+                  adata.ProgressionBSColor = "bg-success";
+        }
+
         /*
         if (adata.Progression <= 100) { adata.ProgressionBSColor ="bg-success"; }
         if (adata.Progression <= 75) { adata.ProgressionBSColor ="bg-info"; }

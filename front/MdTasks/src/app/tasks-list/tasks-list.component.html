@@ -1,6 +1,6 @@
 <div class="row mt-4">
     <div class="col" *ngFor="let acompartiment of compartiments">
-      <div class="card text-center">
+      <div class="card text-center" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
         <div class="card-header p-1">
           {{acompartiment.Nom}}
         </div>
@@ -9,7 +9,7 @@
           <ng-container *ngFor="let atask of tasks" >
             <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
 
-              <div class="card m-2" [attr.data-taskid]="atask.ID">
+              <div class="card m-2" [attr.data-taskid]="atask.ID" [draggable] [dragClass]="'active'" [dragData]="atask">
                 <div class="card-header p-1 text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
                 <div class="card-body p-1">
 
@@ -36,12 +36,18 @@
 </div>
 
 
+<div *ngFor="let a of tasksbycompartiments">
+  <div *ngFor="let r of a">
+    nom : {{r.Nom}}
+  </div>
+</div>
+
+
 
 <div class="row">
 
     <div class="col-sm-3">
-        <div class="card card-outline-success mb-3" droppable [dragOverClass]="'drag-target-border'"
-            [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
+        <div class="card card-outline-success mb-3" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
             <div class="card-header card-inverse card-success">
                 Draggable Items
                 </div>
