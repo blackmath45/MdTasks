@@ -3,8 +3,8 @@ const bodyParser = require('body-parser')
 const app = express()
 const router = express.Router();
 
-//const db = require('./db.js');
 const dbTasks = require('./dbTasks.js');
+const dbCompartiments = require('./dbCompartiments.js');
 
 const HTTP_PORT = 3000
 
@@ -28,19 +28,58 @@ app.use(bodyParser.json());
 /******************************************************************************/
 app.use("/", router);
 app.use(express.static('static'))
-/*
+
 //https://expressjs.com/en/resources/middleware/cors.html
 //https://medium.com/@alexishevia/using-cors-in-express-cac7e29b005b
 router.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-});*/
+});
 
 /******************************************************************************/
 
 
+/******************************************************************************/
+/*                            Compartiments                                   */
+/******************************************************************************/
+router.get("/compartiments", async (req, res, next) =>
+{
+      let result;
+      try
+      {
+        result = await dbCompartiments.find();
+        res.json(result);
+      }
+      catch (err)
+      {
+        console.log('DB error', err);
+        return res.status(500).send();
+      }
 
+});
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                                  Tasks                                     */
+/******************************************************************************/
+router.get("/tasks", async (req, res, next) =>
+{
+      let result;
+      try
+      {
+        result = await dbTasks.find();
+        res.json(result);
+      }
+      catch (err)
+      {
+        console.log('DB error', err);
+        return res.status(500).send();
+      }
+
+});
+/******************************************************************************/
 
 // GET /status
 router.get('/status', function(req, res) {
@@ -75,21 +114,7 @@ router.delete('/', (req, res) => {
   //res.sendStatus(200)
 });
 
-router.get("/api/users", async (req, res, next) =>
-{
-      let result;
-      try
-      {
-        result = await dbTasks.find();
-        res.json(result);
-      }
-      catch (err)
-      {
-        console.log('DB error', err);
-        return res.status(500).send();
-      }
 
-});
 
 /*
 const hash = crypto

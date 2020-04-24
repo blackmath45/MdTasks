@@ -1,25 +1,51 @@
 <p>tasks-list works!</p>
 
-<button (click)="sendGetRequest()">GET Users</button>
+<div class="row">
+    <div class="col" *ngFor="let acompartiment of compartiments">
+      <div class="card text-center">
+        <div class="card-header">
+          {{acompartiment.Nom}}
+        </div>
+        <div class="card-body">
 
-<div *ngFor="let article of products">
-  <h2>{{article.Nom}}</h2>
+          <ng-container *ngFor="let atask of tasks" >
+            <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
 
-    <p>
-      {{article.Notes}}
-    </p>
-    <a href="{{article.ID}}">Read full article</a>
+              <div class="card mb-3" [attr.data-taskid]="atask.ID">
+                <div class="card-header text-white bg-primary">
+                {{atask.Nom}}
+                </div>
+                <div class="card-body">
+
+
+
+                  <!-- bg-success bg-info bg-warning bg-danger -->
+
+                  {{atask.Priorite}}
+                  {{atask.DateDebut}}
+                  {{atask.DateEcheance}}
+
+
+
+                  <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
+                  <p class="card-text">{{atask.Notes}}</p>
+                  <a href="#" class="card-link">Card link</a>
+
+                </div>
+                <div class="card-footer text-muted">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [attr.aria-valuenow]="atask.Progression" aria-valuemin="0" aria-valuemax="100" style="width: {{atask.Progression}}%">{{atask.Progression}}%</div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
 </div>
 
-<ul>
-  <li draggable>Coffee</li>
-  <li draggable>Tea</li>
-  <li draggable>Milk</li>
-</ul>
-
-<div droppable>
-  <p>Drop items here</p>
-</div>
 
 
 <div class="row">

@@ -9,21 +9,32 @@ import { WapiService } from '../wapi.service';
 
 export class TasksListComponent implements OnInit
 {
-  products = [];
+  compartiments = []
+  tasks = [];
+
   constructor(private wapiSvce: WapiService) { }
 
   ngOnInit(): void
   {
+    this.getCompartimentsRequest();
+    this.getTasksRequest();
   }
 
 // AJOUT
-  sendGetRequest()
+  getTasksRequest()
   {
-    this.wapiSvce.fetchData().subscribe((data: any[])=>{
+    this.wapiSvce.getTasks().subscribe((data: any[])=>{
 			console.log(data);
-			this.products = data;
+			this.tasks = data;
 		})
+  }
 
+  getCompartimentsRequest()
+  {
+    this.wapiSvce.getCompartiments().subscribe((data: any[])=>{
+      console.log(data);
+      this.compartiments = data;
+    })
   }
 // FIN AJOUT
 

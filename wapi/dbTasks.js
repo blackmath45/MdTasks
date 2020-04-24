@@ -20,7 +20,7 @@ module.exports =
       }
 */
 
-    var sql = `SELECT ID, ID_Project, Nom, Compartiment, Progression, Priorite,
+    var sql = `SELECT ID, ID_Project, Nom, ID_Compartiment, Progression, Priorite,
                 DateDebut, DateEcheance, Notes FROM tasks`;
 
     var params = []

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
+
 export class WapiService
 {
 
@@ -11,8 +12,13 @@ export class WapiService
 
   constructor(private httpClient: HttpClient) { }
 
-  public fetchData()
+  public getTasks()
   {
-    return this.httpClient.get(`${this.SERVER_URL}/api/users`);
+    return this.httpClient.get(`${this.SERVER_URL}/tasks`);
+  }
+
+  public getCompartiments()
+  {
+    return this.httpClient.get(`${this.SERVER_URL}/compartiments`);
   }
 }
