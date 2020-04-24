@@ -4,7 +4,7 @@ import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/taskslist', pathMatch: 'full' },
+  { path: '', redirectTo: 'taskslist', pathMatch: 'full' },
   { path: 'taskslist', component: TasksListComponent },
   { path: 'taskdetail', component: TaskDetailComponent }
 ];
@@ -13,4 +13,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }
