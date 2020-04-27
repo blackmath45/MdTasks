@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { from, Observable, throwError, of } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { Task } from './task';
 
@@ -66,11 +66,14 @@ console.log(data);
   return this.httpClient.get(`${this.SERVER_URL}/tasks`).pipe(
     map((data: Task[]) =>
     {
-      console.log(typeof(data));
-      return data;
-    }), catchError( error =>
+      const res = { 'status' : 'GOOD', 'data' : data}
+      return res;
+    }),
+    retry(1),
+    catchError(error =>
       {
-      return throwError( 'Something went wrong!' );
+        const res = { 'status' : 'BAD', 'data' : error.message};
+        return of(res);
     })
 )
 /*
@@ -93,9 +96,9 @@ return this.http.get<SomeType>(url, {headers: this.headers})
 
   };
 
-  public getCompartiments() : Observable<Object>
+  public getCompartiments()// : Observable<Object>
   {
-    return this.httpClient.get(`${this.SERVER_URL}/compartiments`);//.pipe(retry(1),catchError(this.handleError));
+    //return this.httpClient.get(`${this.SERVER_URL}/compartiments`);//.pipe(retry(1),catchError(this.handleError));
   };
 
 }
