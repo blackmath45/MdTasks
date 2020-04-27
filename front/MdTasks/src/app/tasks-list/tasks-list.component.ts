@@ -26,29 +26,37 @@ export class TasksListComponent implements OnInit
 
   ngOnInit(): void
   {
-    this.wapiSvce.getTasks();
 
     const example = forkJoin(
+      this.wapiSvce.getCompartiments(),
       this.wapiSvce.getTasks()
-    );
-
-    const subscribe = example.subscribe((dataTasks) =>
-      {
-        this.tasks = dataTasks;
-        console.log(dataTasks);
-      });
-/*
-    const example = forkJoin(
-      this.wapiSvce.getCompartiments().pipe(catchError(error => { this.alert.show = 'true'; this.alert.message = error; })),
-      this.wapiSvce.getTasks().pipe(catchError(error => { this.alert.show = 'true'; this.alert.message = error; }))
     );
 
     const subscribe = example.subscribe(([dataCompartiments, dataTasks]) =>
       {
-        this.compartiments = dataCompartiments;
+        if (dataCompartiments.status == 'GOOD')
+        {
+          this.compartiments = dataCompartiments.data;
+        }
+        else
+        {
+            this.alert.show = 'true';
+            this.alert.message = dataCompartiments.data;
+        }
+
+        if (dataTasks.status == 'GOOD')
+        {
+          this.tasks = dataTasks.data;
+        }
+        else
+        {
+            this.alert.show = 'true';
+            this.alert.message = dataTasks.data;
+        }
+
 
         // Preparation couleurs bootstrap
-        for (let adata of dataTasks)
+        for (let adata of this.tasks)
         {
           //bg-primary bg-success bg-info bg-warning bg-danger
           switch (adata.Priorite)
@@ -78,9 +86,7 @@ export class TasksListComponent implements OnInit
           //if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
           //if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
         }
-
-        this.tasks = dataTasks;
-
+/*
         for (let acompartiment of dataCompartiments)
         {
           for (let atask of dataTasks)
@@ -95,8 +101,8 @@ export class TasksListComponent implements OnInit
               this.tasksbycompartiments[acompartiment.Ordre].push(atask);
             }
           }
-        }
-      });*/
+        }*/
+      });
   }
 
 
