@@ -4,7 +4,7 @@
 
 <div class="row mt-4">
     <div class="col" *ngFor="let acompartiment of compartiments">
-      <div class="card text-center" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
+      <div class="card text-center">
         <div class="card-header p-1">
           {{acompartiment.Nom}}
         </div>
@@ -13,7 +13,7 @@
           <ng-container *ngFor="let atask of tasks" >
             <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
 
-              <div class="card m-2" [attr.data-taskid]="atask.ID" [draggable] [dragClass]="'active'" [dragData]="atask">
+              <div class="card m-2">
                 <div class="card-header p-1 text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
                 <div class="card-body p-1">
 
@@ -37,49 +37,4 @@
         </div>
       </div>
     </div>
-</div>
-
-
-<div *ngFor="let a of tasksbycompartiments">
-<div *ngFor="let r of a">
-  nom : {{r.Nom}}
-  </div>
-</div>
-
-
-
-<div class="row">
-
-    <div class="col-sm-3">
-        <div class="card card-outline-success mb-3" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrag($event)">
-            <div class="card-header card-inverse card-success">
-                Draggable Items
-                </div>
-            <div class="card-block scroll-list">
-                <div class="list-group">
-                    <li *ngFor="let item of vegetables" class="list-group-item list-group-item-action list-group-item-success"
-                        [draggable] [dragClass]="'active'" [dragData]="item">
-                        {{item.name}}
-                    </li>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="col-sm-3">
-        <div class="card card-outline-primary mb-3" droppable [dragOverClass]="'drag-target-border'"
-            [dragHintClass]="'drag-hint'" (onDrop)="onAnyDrop($event)">
-            <div class="card-header card-inverse card-primary">
-                Drop Anything here
-              </div>
-            <div class="card-block scroll-list">
-                <li *ngFor="let item of droppedItems" class="list-group-item"
-                    [draggable] [dragData]="item">
-                    {{item.name}}
-                </li>
-            </div>
-        </div>
-    </div>
-
 </div>

@@ -13,7 +13,6 @@ import {map, catchError} from 'rxjs/operators';
 
 export class TasksListComponent implements OnInit
 {
-  //showAlert = false;
   alert = {show : 'false', type: 'danger', message: 'Error' };
 
   compartiments = [];
@@ -27,7 +26,18 @@ export class TasksListComponent implements OnInit
 
   ngOnInit(): void
   {
+    this.wapiSvce.getTasks();
 
+    const example = forkJoin(
+      this.wapiSvce.getTasks()
+    );
+
+    const subscribe = example.subscribe((dataTasks) =>
+      {
+        this.tasks = dataTasks;
+        console.log(dataTasks);
+      });
+/*
     const example = forkJoin(
       this.wapiSvce.getCompartiments().pipe(catchError(error => { this.alert.show = 'true'; this.alert.message = error; })),
       this.wapiSvce.getTasks().pipe(catchError(error => { this.alert.show = 'true'; this.alert.message = error; }))
@@ -62,12 +72,11 @@ export class TasksListComponent implements OnInit
                     adata.ProgressionBSColor = "bg-success";
           }
 
-          /*
-          if (adata.Progression <= 100) { adata.ProgressionBSColor ="bg-success"; }
-          if (adata.Progression <= 75) { adata.ProgressionBSColor ="bg-info"; }
-          if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
-          if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
-          */
+
+          //if (adata.Progression <= 100) { adata.ProgressionBSColor ="bg-success"; }
+          //if (adata.Progression <= 75) { adata.ProgressionBSColor ="bg-info"; }
+          //if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
+          //if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
         }
 
         this.tasks = dataTasks;
@@ -87,54 +96,8 @@ export class TasksListComponent implements OnInit
             }
           }
         }
-      });
+      });*/
   }
-
-
-
-
-
-
-  vegetables = [
-    {name: 'Carrot', type: 'vegetable'},
-    {name: 'Onion', type: 'vegetable'},
-    {name: 'Potato', type: 'vegetable'},
-    {name: 'Capsicum', type: 'vegetable'}];
-
-  droppedItems = [];
-
-  onAnyDrop(e: any)
-  {
-    this.droppedItems.push(e.dragData);
-
-    if (e.dragData.type === 'vegetable')
-    {
-      this.removeItem(e.dragData, this.vegetables);
-    }
-  }
-
-  onAnyDrag(e: any)
-  {
-    this.vegetables.push(e.dragData);
-
-    if (e.dragData.type === 'vegetable')
-    {
-      this.removeItem(e.dragData, this.droppedItems);
-    }
-  }
-
-  removeItem(item: any, list: Array<any>)
-  {
-    let index = list.map(function (e)
-    {
-      return e.name
-    }).indexOf(item.name);
-    list.splice(index, 1);
-  }
-
-
-
-
 
 
 

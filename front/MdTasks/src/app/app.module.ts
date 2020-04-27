@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgDragDropModule } from 'ng-drag-drop';
+import { DragulaModule } from 'ng2-dragula';
 
 import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
@@ -23,7 +23,7 @@ import { TaskDetailComponent } from './task-detail/task-detail.component';
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
-    NgDragDropModule.forRoot()
+    DragulaModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
