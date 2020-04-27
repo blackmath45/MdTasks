@@ -9,7 +9,7 @@
           {{acompartiment.Nom}}
         </div>
         <div class="card-body p-0">
-
+<div dragula="VAMPIRES">
           <ng-container *ngFor="let atask of tasks" >
             <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
 
@@ -31,9 +31,10 @@
                   </div>
                 </div>
               </div>
+
             </ng-container>
           </ng-container>
-
+</div>
         </div>
       </div>
     </div>

@@ -24,6 +24,8 @@ export class TasksListComponent implements OnInit
 
   closeAlert() { this.alert.show = 'false'; }
 
+//https://stackblitz.com/edit/ng2-dragula-base?file=src%2Fapp%2Fapp.component.html
+
   ngOnInit(): void
   {
 
