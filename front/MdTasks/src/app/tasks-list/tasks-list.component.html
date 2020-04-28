@@ -2,24 +2,18 @@
   <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
 </ng-container>
 
-<div class="row mt-4">
+<div class="row mt-4" cdkDropListGroup>
     <div class="col" *ngFor="let atbc of tasksbycompartiments">
-      <div class="card text-center cdkDropListGroup">
+      <div class="card text-center">
         <div class="card-header p-1">
-          {{atbc.compartiment.Nom}}
+          {{atbc.compartiment.Nom}} ({{atbc.compartiment.ID}})
         </div>
-        <div class="card-body p-0">
+        <div class="card-body p-0" cdkDropList [cdkDropListData]="atbc.tasks" (cdkDropListDropped)="drop($event)">
 
         <ng-container *ngIf="atbc.tasks && atbc.tasks.length > 0; else emptytasks" >
           <ng-container *ngFor="let atask of atbc.tasks" >
 
-
-            <div cdkDropList [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)">
-              <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
-            </div>
-
-
-              <div class="card m-2">
+              <div class="card text-center m-2" cdkDrag [cdkDragData]="atbc.compartiment.ID">
                 <div class="card-header p-1 text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
                 <div class="card-body p-1">
 

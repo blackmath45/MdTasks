@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WapiService } from '../wapi.service';
 import { Observable, forkJoin } from 'rxjs';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Compartiment } from '../compartiment'
 import { Task } from '../task'
 import { Tasksbycompartiment } from '../tasksbycompartiment'
@@ -26,11 +27,17 @@ export class TasksListComponent implements OnInit
 
   closeAlert() { this.alert.show = 'false'; }
 
+  isInit = 0;
+
 //https://stackblitz.com/edit/ng2-dragula-base?file=src%2Fapp%2Fapp.component.html
 
   ngOnInit(): void
   {
+    if (this.isInit == 0)
+    {
     this.refresh();
+    //this.isInit = 1;
+  }
   }
 
   refresh() : void
@@ -128,6 +135,32 @@ export class TasksListComponent implements OnInit
 
 
 
+    drop(event: CdkDragDrop<string[]>)
+    {
+      console.log(event);
+
+      if (event.previousContainer === event.container)
+      {
+        /*
+        console.log(event.previousIndex);
+        console.log(event.currentIndex);
+        console.log(event.container.data);
+        console.log('--------------------')
+        */
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      }
+      else
+      {
+        console.log(event.previousContainer.data);
+        console.log(event.container.data);
+        console.log('--------------------')
+        transferArrayItem(event.previousContainer.data,
+                          event.container.data,
+                          event.previousIndex,
+                          event.currentIndex);
+        //SCANNER tasksbycompartiments pour trouver le task qui a bougé (on l'a dans container.data)
+      }
+    }
 
 
 
