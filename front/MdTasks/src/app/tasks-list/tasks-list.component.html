@@ -14,11 +14,7 @@
           <ng-container *ngFor="let atask of atbc.tasks" >
 
 
-            <div
-              cdkDropList
-              [cdkDropListData]="todo"
-              class="example-list"
-              (cdkDropListDropped)="drop($event)">
+            <div cdkDropList [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)">
               <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
             </div>
 
