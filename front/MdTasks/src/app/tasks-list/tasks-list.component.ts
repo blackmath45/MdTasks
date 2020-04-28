@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WapiService } from '../wapi.service';
 import { Observable, forkJoin } from 'rxjs';
-import { DragulaService } from 'ng2-dragula';
 import { Compartiment } from '../compartiment'
 import { Task } from '../task'
 import { Tasksbycompartiment } from '../tasksbycompartiment'
@@ -13,6 +12,9 @@ import { Tasksbycompartiment } from '../tasksbycompartiment'
 })
 
 //https://ng-bootstrap.github.io/#/components/alert/examples
+//https://medium.com/angular-in-depth/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
+//https://material.angular.io/cdk/drag-drop/examples
+//https://alligator.io/angular/drag-drop/
 
 export class TasksListComponent implements OnInit
 {
@@ -20,15 +22,7 @@ export class TasksListComponent implements OnInit
 
   tasksbycompartiments : Tasksbycompartiment[] = [];
 
-  constructor(private wapiSvce: WapiService, private dragulaService: DragulaService)
-  {
-    this.dragulaService.dropModel("VAMPIRES").subscribe(args =>
-      {
-        console.log(args.item);
-        console.log(args.item.ID);
-        console.log(args.target.parentElement);
-      });
-  }
+  constructor(private wapiSvce: WapiService){ }
 
   closeAlert() { this.alert.show = 'false'; }
 
