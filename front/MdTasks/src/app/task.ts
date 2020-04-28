@@ -1,4 +1,5 @@
-export class Task {
+export class Task
+{
   ID: number;
   ID_Project: number;
   Nom: string;

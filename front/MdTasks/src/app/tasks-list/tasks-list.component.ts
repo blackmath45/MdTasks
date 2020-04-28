@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { WapiService } from '../wapi.service';
 import { Observable, forkJoin } from 'rxjs';
-import {map, catchError} from 'rxjs/operators';
+import { DragulaService } from 'ng2-dragula';
+import { Compartiment } from '../compartiment'
+import { Task } from '../task'
+import { Tasksbycompartiment } from '../tasksbycompartiment'
 
 @Component({
   selector: 'app-tasks-list',
@@ -15,12 +18,17 @@ export class TasksListComponent implements OnInit
 {
   alert = {show : 'false', type: 'danger', message: 'Error' };
 
-  compartiments = [];
-  tasks = [];
+  tasksbycompartiments : Tasksbycompartiment[] = [];
 
-  tasksbycompartiments= [[]];
-
-  constructor(private wapiSvce: WapiService) { }
+  constructor(private wapiSvce: WapiService, private dragulaService: DragulaService)
+  {
+    this.dragulaService.dropModel("VAMPIRES").subscribe(args =>
+      {
+        console.log(args.item);
+        console.log(args.item.ID);
+        console.log(args.target.parentElement);
+      });
+  }
 
   closeAlert() { this.alert.show = 'false'; }
 
@@ -28,7 +36,11 @@ export class TasksListComponent implements OnInit
 
   ngOnInit(): void
   {
+    this.refresh();
+  }
 
+  refresh() : void
+  {
     const example = forkJoin(
       this.wapiSvce.getCompartiments(),
       this.wapiSvce.getTasks()
@@ -36,9 +48,12 @@ export class TasksListComponent implements OnInit
 
     const subscribe = example.subscribe(([dataCompartiments, dataTasks]) =>
       {
+        let compartiments = [];
+        let tasks = [];
+
         if (dataCompartiments.status == 'GOOD')
         {
-          this.compartiments = dataCompartiments.data;
+          compartiments = dataCompartiments.data;
         }
         else
         {
@@ -48,7 +63,7 @@ export class TasksListComponent implements OnInit
 
         if (dataTasks.status == 'GOOD')
         {
-          this.tasks = dataTasks.data;
+          tasks = dataTasks.data;
         }
         else
         {
@@ -56,9 +71,8 @@ export class TasksListComponent implements OnInit
             this.alert.message = dataTasks.data;
         }
 
-
         // Preparation couleurs bootstrap
-        for (let adata of this.tasks)
+        for (let adata of tasks)
         {
           //bg-primary bg-success bg-info bg-warning bg-danger
           switch (adata.Priorite)
@@ -88,26 +102,35 @@ export class TasksListComponent implements OnInit
           //if (adata.Progression <= 50) { adata.ProgressionBSColor ="bg-warning"; }
           //if (adata.Progression <= 25) { adata.ProgressionBSColor ="bg-danger"; }
         }
-/*
-        for (let acompartiment of dataCompartiments)
+
+        for (let acompartiment of compartiments)
         {
-          for (let atask of dataTasks)
+          let newtc = new Tasksbycompartiment();
+          newtc.compartiment = acompartiment;
+
+          for (let atask of tasks)
           {
             if (atask.ID_Compartiment == acompartiment.ID)
             {
-              if (this.tasksbycompartiments[acompartiment.Ordre] === undefined)
-              {
-                this.tasksbycompartiments[acompartiment.Ordre] = []
-              }
-              // stocker données mais aussi index du compartiment
-              this.tasksbycompartiments[acompartiment.Ordre].push(atask);
+              newtc.tasks.push(atask);
             }
           }
-        }*/
+
+          this.tasksbycompartiments.push(newtc);
+        }
+/*
+        for (let acmp of this.tasksbycompartiments)
+        {
+          console.log(acmp.compartiment.Nom)
+
+          for (let atask of acmp.tasks)
+          {
+            console.log(atask.Nom);
+          }
+        }
+*/
       });
   }
-
-
 
 
 

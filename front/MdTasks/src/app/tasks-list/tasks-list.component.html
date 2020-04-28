@@ -3,15 +3,15 @@
 </ng-container>
 
 <div class="row mt-4">
-    <div class="col" *ngFor="let acompartiment of compartiments">
+    <div class="col" *ngFor="let atbc of tasksbycompartiments">
       <div class="card text-center">
         <div class="card-header p-1">
-          {{acompartiment.Nom}}
+          {{atbc.compartiment.Nom}}
         </div>
         <div class="card-body p-0">
-<div dragula="VAMPIRES">
-          <ng-container *ngFor="let atask of tasks" >
-            <ng-container *ngIf="atask.ID_Compartiment == acompartiment.ID">
+<div dragula="VAMPIRES" [(dragulaModel)]="atbc.tasks">
+        <ng-container *ngIf="atbc.tasks && atbc.tasks.length > 0; else emptytasks" >
+          <ng-container *ngFor="let atask of atbc.tasks" >
 
               <div class="card m-2">
                 <div class="card-header p-1 text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
@@ -32,8 +32,12 @@
                 </div>
               </div>
 
-            </ng-container>
           </ng-container>
+          </ng-container>
+          <ng-template #emptytasks>
+             <div class="p-4">
+            </div>
+          </ng-template >
 </div>
         </div>
       </div>
