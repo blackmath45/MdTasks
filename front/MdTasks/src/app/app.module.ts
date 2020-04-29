@@ -11,12 +11,18 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
+import { ProjetsTabComponent } from './projets-tab/projets-tab.component';
+import { ProjetDetailComponent } from './projet-detail/projet-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TasksListComponent,
-    TaskDetailComponent
+    TaskDetailComponent,
+    TasksTabComponent,
+    ProjetsTabComponent,
+    ProjetDetailComponent
   ],
   imports: [
     BrowserModule,
