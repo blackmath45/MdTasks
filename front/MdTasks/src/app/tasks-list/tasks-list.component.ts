@@ -137,7 +137,7 @@ export class TasksListComponent implements OnInit
 
     drop(event: CdkDragDrop<string[]>)
     {
-      console.log(event);
+      //console.log(event);
 
       if (event.previousContainer === event.container)
       {
@@ -151,14 +151,25 @@ export class TasksListComponent implements OnInit
       }
       else
       {
+        /*
         console.log(event.previousContainer.data);
         console.log(event.container.data);
         console.log('--------------------')
+        */
         transferArrayItem(event.previousContainer.data,
                           event.container.data,
                           event.previousIndex,
                           event.currentIndex);
+
         //SCANNER tasksbycompartiments pour trouver le task qui a bougé (on l'a dans container.data)
+        for (let acmp of this.tasksbycompartiments)
+        {
+          for (let atask of acmp.tasks)
+          {
+            if (atask.ID == event.item.data.ID)
+            console.log("'" + atask.Nom + " (" + atask.ID + ") moved from " + atask.ID_Compartiment + " to " + acmp.compartiment.ID);
+          }
+        }
       }
     }
 

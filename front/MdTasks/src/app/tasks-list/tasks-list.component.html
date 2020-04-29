@@ -13,7 +13,7 @@
         <ng-container *ngIf="atbc.tasks && atbc.tasks.length > 0; else emptytasks" >
           <ng-container *ngFor="let atask of atbc.tasks" >
 
-              <div class="card text-center m-2" cdkDrag [cdkDragData]="atbc.compartiment.ID">
+              <div class="card text-center m-2" cdkDrag [cdkDragData]="atask">
                 <div class="card-header p-1 text-white {{atask.PrioriteBSColor}}">{{atask.Nom}}</div>
                 <div class="card-body p-1">
 
