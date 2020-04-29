@@ -35,3 +35,5 @@ import { ProjetDetailComponent } from './projet-detail/projet-detail.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+//TODO : https://feathericons.com/
