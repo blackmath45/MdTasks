@@ -88,8 +88,6 @@ router.options("/tasks/compartiment/:id", async (req, res, next) =>
 
 router.patch("/tasks/compartiment/:id", async (req, res, next) =>
 {
-    console.log("update " + req.params.id + "-" + req.body.ID_Compartiment)
-
     if (!req.params.id || !req.body.ID_Compartiment)
     {
           return res.status(204).send();

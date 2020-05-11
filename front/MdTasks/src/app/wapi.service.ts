@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { from, Observable, throwError, of } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { Task } from './task';
@@ -38,8 +38,22 @@ export class WapiService
 
   public updateTaskCompartiment(id, id_compartiment)
   {
+/*
+    login(username, password): Observable<any> {
+  const body = new HttpParams()
+    .set('username', username)
+    .set('password', password);
 
-    let body = JSON.stringify({ "ID_Compartiment" : id_compartiment});
+  return this.http.post('/login',
+    body.toString(),
+    {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+    }
+  );
+}*/
+    const body = new HttpParams()
+      .set('ID_Compartiment', id_compartiment);
 
     return this.httpClient.patch(`${this.SERVER_URL}/tasks/compartiment/` + id, body).pipe(
       map((data) =>

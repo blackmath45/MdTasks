@@ -171,7 +171,6 @@ export class TasksListComponent implements OnInit
               console.log("'" + atask.Nom + " (" + atask.ID + ") moved from " + atask.ID_Compartiment + " to " + acmp.compartiment.ID);
               this.wapiSvce.updateTaskCompartiment(atask.ID, acmp.compartiment.ID).subscribe((data)=>
               {
-                console.log(data);
                 if (!(data.status == 'GOOD'))
                 {
                     this.alert.show = 'true';
