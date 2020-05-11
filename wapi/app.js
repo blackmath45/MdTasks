@@ -33,12 +33,14 @@ app.use(express.static('static'))
 //https://medium.com/@alexishevia/using-cors-in-express-cac7e29b005b
 router.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
   next();
 });
 
 /******************************************************************************/
 
+//https://www.restapitutorial.com/lessons/httpmethods.html
 
 /******************************************************************************/
 /*                            Compartiments                                   */
@@ -77,6 +79,49 @@ router.get("/tasks", async (req, res, next) =>
         console.log('DB error', err);
         return res.status(500).send();
       }
+});
+
+router.options("/tasks/compartiment/:id", async (req, res, next) =>
+{
+  return res.status(204).send();
+});
+
+router.patch("/tasks/compartiment/:id", async (req, res, next) =>
+{
+    console.log("update " + req.params.id + "-" + req.body.ID_Compartiment)
+
+    if (!req.params.id || !req.body.ID_Compartiment)
+    {
+          return res.status(204).send();
+    }
+
+    var getdata =
+    {
+      ID: req.params.id
+    }
+    var postdata =
+    {
+        ID_Compartiment: req.body.ID_Compartiment
+    }
+
+    if (Number.isInteger(postdata.ID_Compartiment) && Number.isInteger(getdata.ID))
+    {
+        return res.status(204).send();
+    }
+
+    let result;
+    try
+    {
+      console.log("update " + getdata.ID + "-" + postdata.ID_Compartiment)
+      result = await dbTasks.updateCompartiment(getdata.ID, postdata.ID_Compartiment);
+      //res.json(result);
+      res.status(200).send();
+    }
+    catch (err)
+    {
+      console.log('DB error', err);
+      return res.status(500).send();
+    }
 
 });
 /******************************************************************************/

@@ -36,6 +36,26 @@ export class WapiService
       )
     };
 
+  public updateTaskCompartiment(id, id_compartiment)
+  {
+
+    let body = JSON.stringify({ "ID_Compartiment" : id_compartiment});
+
+    return this.httpClient.patch(`${this.SERVER_URL}/tasks/compartiment/` + id, body).pipe(
+      map((data) =>
+      {
+        const res = { 'status' : 'GOOD', 'data' : data}
+        return res;
+      }),
+      retry(1),
+      catchError(error =>
+        {
+          const res = { 'status' : 'BAD', 'data' : error.message};
+          return of(res);
+        })
+      )
+    };
+
   public getCompartiments()// : Observable<Object>
   {
     return this.httpClient.get(`${this.SERVER_URL}/compartiments`).pipe(

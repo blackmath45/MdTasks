@@ -167,13 +167,23 @@ export class TasksListComponent implements OnInit
           for (let atask of acmp.tasks)
           {
             if (atask.ID == event.item.data.ID)
-            console.log("'" + atask.Nom + " (" + atask.ID + ") moved from " + atask.ID_Compartiment + " to " + acmp.compartiment.ID);
+            {
+              console.log("'" + atask.Nom + " (" + atask.ID + ") moved from " + atask.ID_Compartiment + " to " + acmp.compartiment.ID);
+              this.wapiSvce.updateTaskCompartiment(atask.ID, acmp.compartiment.ID).subscribe((data)=>
+              {
+                console.log(data);
+                if (!(data.status == 'GOOD'))
+                {
+                    this.alert.show = 'true';
+                    this.alert.message = data.data;
+                }
+              });
+            }
           }
         }
       }
+
     }
-
-
 
 
 }

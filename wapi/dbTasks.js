@@ -41,8 +41,36 @@ module.exports =
     });
   },
 
-  findOne: function () {
+  findOne: function ()
+  {
     // whatever
+  },
+
+  updateCompartiment: function (id, id_compartiment)
+  {
+    return new Promise((resolve, reject) =>
+    {
+      setTimeout(() => {
+        reject('Query DB failed');
+      }, 500);
+
+    var sql = `UPDATE tasks SET ID_Compartiment = ? WHERE ID = ?`;
+
+    var params = [id_compartiment, id]
+
+    db.run(sql, params,  (err, rows) => {
+        if (err)
+        {
+          console.log('Error running sql: ' + sql)
+          console.log(err)
+          reject(err)
+        }
+        else
+        {
+            resolve(rows)
+        }
+      })
+    });
   }
 };
 
